@@ -166,6 +166,12 @@ exports.verifyResetAccessToken = async (req, res) => {
                 // If the token is invalid or expired, returning a message
                 res.status(401).send({message: "Link is invalid / expired"});
             }else{
+                const userData = await usersModel.findOne({email: decodedToken.email});
+                if(userData.resetPasswordToken !== resetToken){
+                    // If the user has already used the link and reset the password already
+                    // Returning a message
+                    return res.status(401).send({message: "Link is already used. Kindly initiate new request for resetting your password."});
+                }
                 // If the token is valid, returing a message and the user email decoded from the token
                 res.status(200).send({message: "Token is verified and is valid. Can reset the password.", data: {email: decodedToken.email}});
             }
