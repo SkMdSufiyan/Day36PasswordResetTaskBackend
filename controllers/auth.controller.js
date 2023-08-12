@@ -161,7 +161,7 @@ exports.verifyResetAccessToken = async (req, res) => {
     try{
         const resetToken = req.params.resetToken; // Taking the token from the params
         // Verifying the validity of the token
-        jwt.verify(resetToken, process.env.SECRET_KEY_FOR_RESET_PASSWORD, (err, decodedToken) => {
+        jwt.verify(resetToken, process.env.SECRET_KEY_FOR_RESET_PASSWORD, async (err, decodedToken) => {
             if(err){
                 // If the token is invalid or expired, returning a message
                 res.status(401).send({message: "Link is invalid / expired"});
